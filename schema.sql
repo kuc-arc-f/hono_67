@@ -37,3 +37,35 @@ CREATE TABLE IF NOT EXISTS todo9 (
   updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+--todo10
+DROP TABLE IF EXISTS todo10;
+CREATE TABLE IF NOT EXISTS todo10 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  content TEXT,
+  content_type TEXT,
+  age TEXT,
+  public BOOLEAN DEFAULT false,
+  food_orange BOOLEAN DEFAULT false,
+  food_apple BOOLEAN DEFAULT false,
+  food_banana BOOLEAN DEFAULT false,
+  food_melon BOOLEAN DEFAULT false,
+  food_grape BOOLEAN DEFAULT false,
+  date_publish TEXT NULL DEFAULT NULL,
+  date_update TEXT NULL DEFAULT NULL,
+  post_number TEXT NULL DEFAULT NULL,
+  address_country TEXT NULL DEFAULT NULL,
+  address_pref TEXT NULL DEFAULT NULL,
+  address_city TEXT NULL DEFAULT NULL,
+  address_1 TEXT NULL DEFAULT NULL,
+  address_2 TEXT NULL DEFAULT NULL,
+  address_3 TEXT NULL DEFAULT NULL,
+  text_option1 TEXT NULL DEFAULT NULL,
+  text_option2 TEXT NULL DEFAULT NULL,
+  text_option3 TEXT NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+

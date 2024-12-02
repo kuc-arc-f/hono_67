@@ -289,6 +289,115 @@ app.delete('/api/todo9/:id', async (c) => {
     return c.json({ error: 'Failed to delete todo' }, 500);
   }
 });
+
+// 全てのTODOを取得
+app.get('/api/todo10', async (c) => {
+  const { searchQuery } = c.req.query();
+  
+  try {
+    let sql = 'SELECT * FROM todo10';
+    const params: any[] = [];
+
+    if (searchQuery) {
+      sql += ' WHERE title LIKE ? OR content LIKE ?';
+      params.push(`%${searchQuery}%`, `%${searchQuery}%`);
+    }
+
+    sql += ' ORDER BY created_at DESC';
+    
+    const todos = await c.env.DB.prepare(sql).bind(...params).all();
+    //console.log(todos.results);
+    return c.json({ todos: todos.results });
+  } catch (error) {
+    return c.json({ error: 'Failed to fetch todos' }, 500);
+  }
+});
+
+// 新しいTODOを作成
+app.post('/api/todo10', async (c) => {
+  try {
+    const body = await c.req.json();
+    //const todo = todoSchema.parse(body);
+    const todo = body;
+console.log(todo);
+    const { success } = await c.env.DB.prepare(`
+      INSERT INTO todo10 (
+        title, content, content_type, age, public,
+        food_orange, food_apple, food_banana, food_melon, food_grape,
+        date_publish, date_update, post_number,
+        address_country, address_pref, address_city,
+        address_1, address_2, address_3,
+        text_option1, text_option2, text_option3
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      todo.title, todo.content, todo.content_type, todo.age, todo.public,
+      todo.food_orange, todo.food_apple, todo.food_banana, todo.food_melon, todo.food_grape,
+      todo.date_publish, todo.date_update, todo.post_number,
+      todo.address_country, todo.address_pref, todo.address_city,
+      todo.address_1, todo.address_2, todo.address_3,
+      todo.text_option1, todo.text_option2, todo.text_option3
+    ).run();
+
+    if (success) {
+      return c.json({ message: 'Todo created successfully' }, 201);
+    }
+    return c.json({ error: 'Failed to create todo' }, 500);
+  } catch (error) {
+    console.error(error);
+    return c.json({ error: 'Invalid input' }, 400);
+  }
+});
+
+// TODOを更新
+app.put('/api/todo10/:id', async (c) => {
+  try {
+    const id = c.req.param('id');
+    const body = await c.req.json();
+    const todo = todoSchema.parse(body);
+
+    const { success } = await c.env.DB.prepare(`
+      UPDATE todo10 SET
+        title = ?, content = ?, content_type = ?, age = ?, public = ?,
+        food_orange = ?, food_apple = ?, food_banana = ?, food_melon = ?, food_grape = ?,
+        date_publish = ?, date_update = ?, post_number = ?,
+        address_country = ?, address_pref = ?, address_city = ?,
+        address_1 = ?, address_2 = ?, address_3 = ?,
+        text_option1 = ?, text_option2 = ?, text_option3 = ?,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).bind(
+      todo.title, todo.content, todo.content_type, todo.age, todo.public,
+      todo.food_orange, todo.food_apple, todo.food_banana, todo.food_melon, todo.food_grape,
+      todo.date_publish, todo.date_update, todo.post_number,
+      todo.address_country, todo.address_pref, todo.address_city,
+      todo.address_1, todo.address_2, todo.address_3,
+      todo.text_option1, todo.text_option2, todo.text_option3,
+      id
+    ).run();
+
+    if (success) {
+      return c.json({ message: 'Todo updated successfully' });
+    }
+    return c.json({ error: 'Todo not found' }, 404);
+  } catch (error) {
+    return c.json({ error: 'Invalid input' }, 400);
+  }
+});
+
+// TODOを削除
+app.delete('/api/todo10/:id', async (c) => {
+  try {
+    const id = c.req.param('id');
+    const { success } = await c.env.DB.prepare('DELETE FROM todo10 WHERE id = ?').bind(id).run();
+
+    if (success) {
+      return c.json({ message: 'Todo deleted successfully' });
+    }
+    return c.json({ error: 'Todo not found' }, 404);
+  } catch (error) {
+    return c.json({ error: 'Failed to delete todo' }, 500);
+  }
+});
 //
 app.get('*', (c) => {
   return c.html(
