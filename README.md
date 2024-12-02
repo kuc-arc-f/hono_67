@@ -6,7 +6,7 @@
 
  date    : 2024/11/29
 
- update  :
+ update  : 2024/12/01
 
 ***
 ### Summary
@@ -42,7 +42,14 @@ database_id = ""
 ```
 
 ***
-### blog 
+### Prompt
+
+* todo10
+* https://gist.github.com/kuc-arc-f/3c7dcd751c2e04de0f9dbc6d4808bd13
+
+* todo9
+* https://gist.github.com/kuc-arc-f/21e44bf64b568f1d3c1d029205ba7690
+
 
 ***
 # License
